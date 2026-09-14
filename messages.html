@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages - SkillHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="logo">Skill<span>Hub</span></a>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="services.html">Services</a>
+    <a href="favorites.html">Favoris</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <section class="messages-container">
+
+    <h1>Messages</h1>
+
+    <div id="messageArea">
+
+      <div class="empty-state">
+
+        <h2>Aucune conversation</h2>
+
+        <p>
+          Vos conversations avec les professionnels
+          apparaîtront ici.
+        </p>
+
+        <a href="services.html" class="btn">
+          Rechercher un service
+        </a>
+
+      </div>
+
+    </div>
+
+    <form id="messageForm" style="display:none;">
+
+      <textarea
+        id="messageText"
+        placeholder="Écrire un message..."
+        required
+      ></textarea>
+
+      <button class="btn">
+        Envoyer
+      </button>
+
+    </form>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+
+<script>
+
+const params =
+  new URLSearchParams(window.location.search);
+
+const serviceId = params.get("service");
+
+if (serviceId !== null) {
+
+  const services =
+    JSON.parse(localStorage.getItem("skillhubServices")) || [];
+
+  const service = services[serviceId];
+
+  if (service) {
+
+    document.getElementById("messageArea")
+      .innerHTML = `
+        <div class="message-header">
+          <h2>${escapeHTML(service.seller)}</h2>
+          <p>${escapeHTML(service.title)}</p>
+        </div>
+
+        <div id="conversation"></div>
+      `;
+
+    document.getElementById("messageForm")
+      .style.display = "block";
+
+  }
+}
+
+document.getElementById("messageForm")
+.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  const text =
+    document.getElementById("messageText").value.trim();
+
+  if (!text) return;
+
+  const conversation =
+    document.getElementById("conversation");
+
+  conversation.innerHTML += `
+    <div class="message">
+      ${escapeHTML(text)}
+    </div>
+  `;
+
+  document.getElementById("messageText").value = "";
+
+});
+
+</script>
+
+</body>
+</html>

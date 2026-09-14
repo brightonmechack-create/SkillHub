@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services - SkillHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="logo">Skill<span>Hub</span></a>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="services.html">Services</a>
+    <a href="favorites.html">Favoris</a>
+    <a href="messages.html">Messages</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+
+  <a href="publish.html" class="btn">+ Publier</a>
+</header>
+
+<main class="page">
+
+  <section class="page-header">
+    <h1>Trouver un service</h1>
+    <p>Découvrez les offres publiées par les professionnels.</p>
+  </section>
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="serviceSearch"
+      placeholder="Rechercher un service..."
+      oninput="loadServicesPage()"
+    >
+  </div>
+
+  <div id="servicesList" class="services-grid"></div>
+
+</main>
+
+<script src="script.js"></script>
+
+<script>
+function loadServicesPage() {
+  const container = document.getElementById("servicesList");
+  const search = document.getElementById("serviceSearch").value.toLowerCase();
+
+  const services = JSON.parse(localStorage.getItem("skillhubServices")) || [];
+
+  const filtered = services.filter(service =>
+    service.title.toLowerCase().includes(search) ||
+    service.description.toLowerCase().includes(search) ||
+    service.category.toLowerCase().includes(search)
+  );
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <h2>Aucune offre trouvée</h2>
+        <p>Il n'y a actuellement aucun service correspondant à votre recherche.</p>
+        <a href="publish.html" class="btn">Publier une offre</a>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map((service, index) => `
+    <article class="service-card">
+      <div class="service-category">${escapeHTML(service.category)}</div>
+
+      <h3>${escapeHTML(service.title)}</h3>
+
+      <p>${escapeHTML(service.description)}</p>
+
+      <strong>${escapeHTML(service.price)}</strong>
+
+      <br><br>
+
+      <a href="service.html?id=${index}" class="btn">
+        Voir les détails
+      </a>
+    </article>
+  `).join("");
+}
+
+loadServicesPage();
+</script>
+
+</body>
+</html>

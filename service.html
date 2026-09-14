@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détails du service - SkillHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="logo">Skill<span>Hub</span></a>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="services.html">Services</a>
+    <a href="favorites.html">Favoris</a>
+    <a href="messages.html">Messages</a>
+  </nav>
+
+  <a href="publish.html" class="btn">+ Publier</a>
+</header>
+
+<main class="page">
+
+  <div id="serviceDetails"></div>
+
+</main>
+
+<script src="script.js"></script>
+
+<script>
+function showService() {
+
+  const container = document.getElementById("serviceDetails");
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const services =
+    JSON.parse(localStorage.getItem("skillhubServices")) || [];
+
+  const service = services[id];
+
+  if (!service) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <h1>Service introuvable</h1>
+        <p>Cette offre n'existe pas ou a été supprimée.</p>
+        <a href="services.html" class="btn">
+          Retour aux services
+        </a>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <section class="detail-card">
+
+      <span class="service-category">
+        ${escapeHTML(service.category)}
+      </span>
+
+      <h1>${escapeHTML(service.title)}</h1>
+
+      <p class="detail-description">
+        ${escapeHTML(service.description)}
+      </p>
+
+      <div class="detail-info">
+        <div>
+          <small>Professionnel</small>
+          <strong>${escapeHTML(service.seller)}</strong>
+        </div>
+
+        <div>
+          <small>Prix</small>
+          <strong>${escapeHTML(service.price)}</strong>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+
+        <button class="btn"
+          onclick="contactSeller('${id}')">
+          Contacter
+        </button>
+
+        <button class="btn secondary"
+          onclick="addFavorite('${id}')">
+          ♡ Ajouter aux favoris
+        </button>
+
+      </div>
+
+      <br>
+
+      <a href="services.html">← Retour aux services</a>
+
+    </section>
+  `;
+}
+
+function contactSeller(id) {
+  window.location.href = "messages.html?service=" + id;
+}
+
+function addFavorite(id) {
+
+  let favorites =
+    JSON.parse(localStorage.getItem("skillhubFavorites")) || [];
+
+  if (!favorites.includes(id)) {
+    favorites.push(id);
+    localStorage.setItem(
+      "skillhubFavorites",
+      JSON.stringify(favorites)
+    );
+
+    alert("Service ajouté aux favoris.");
+  } else {
+    alert("Ce service est déjà dans vos favoris.");
+  }
+}
+
+showService();
+</script>
+
+</body>
+</html>

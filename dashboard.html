@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SkillHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+  <a href="index.html" class="logo">
+    Skill<span>Hub</span>
+  </a>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="services.html">Services</a>
+    <a href="profile.html">Profil</a>
+    <a href="messages.html">Messages</a>
+  </nav>
+
+  <button class="btn" onclick="logout()">
+    Déconnexion
+  </button>
+
+</header>
+
+<main class="page">
+
+  <section class="dashboard-header">
+
+    <h1>Tableau de bord</h1>
+
+    <p id="welcome">
+      Bienvenue sur SkillHub.
+    </p>
+
+  </section>
+
+  <section class="dashboard-grid">
+
+    <div class="dashboard-card">
+
+      <h3>Mes offres</h3>
+
+      <strong id="offerCount">0</strong>
+
+      <p>
+        offres publiées
+      </p>
+
+    </div>
+
+    <div class="dashboard-card">
+
+      <h3>Favoris</h3>
+
+      <strong id="favoriteCount">0</strong>
+
+      <p>
+        services enregistrés
+      </p>
+
+    </div>
+
+  </section>
+
+  <br>
+
+  <a href="publish.html" class="btn">
+    + Publier une nouvelle offre
+  </a>
+
+  <section>
+
+    <h2>Mes offres</h2>
+
+    <div id="myOffers" class="services-grid"></div>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+
+<script>
+
+const user =
+  JSON.parse(localStorage.getItem("skillhubUser"));
+
+if (!user) {
+
+  window.location.href = "login.html";
+
+}
+
+if (user) {
+
+  document.getElementById("welcome")
+    .textContent =
+    "Bienvenue, " + user.name + ".";
+
+}
+
+function loadDashboard() {
+
+  const services =
+    JSON.parse(localStorage.getItem("skillhubServices")) || [];
+
+  const favorites =
+    JSON.parse(localStorage.getItem("skillhubFavorites")) || [];
+
+  document.getElementById("favoriteCount")
+    .textContent = favorites.length;
+
+  const myOffers =
+    services.filter(
+      service => service.seller === user.name
+    );
+
+  document.getElementById("offerCount")
+    .textContent = myOffers.length;
+
+  const container =
+    document.getElementById("myOffers");
+
+  if (myOffers.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty-state">
+
+        <h3>Vous n'avez encore aucune offre</h3>
+
+        <p>
+          Publiez votre premier service pour commencer.
+        </p>
+
+        <a href="publish.html" class="btn">
+          Publier une offre
+        </a>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    myOffers.map(service => {
+
+      const id =
+        services.indexOf(service);
+
+      return `
+        <article class="service-card">
+
+          <span class="service-category">
+            ${escapeHTML(service.category)}
+          </span>
+
+          <h3>
+            ${escapeHTML(service.title)}
+          </h3>
+
+          <p>
+            ${escapeHTML(service.description)}
+          </p>
+
+          <strong>
+            ${escapeHTML(service.price)}
+          </strong>
+
+          <br><br>
+
+          <a
+            href="service.html?id=${id}"
+            class="btn"
+          >
+            Voir
+          </a>
+
+        </article>
+      `;
+
+    }).join("");
+
+}
+
+function logout() {
+
+  localStorage.removeItem(
+    "skillhubLoggedIn"
+  );
+
+  window.location.href = "index.html";
+
+}
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>

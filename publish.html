@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publier une offre - SkillHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="logo">Skill<span>Hub</span></a>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="services.html">Services</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <section class="form-container">
+
+    <h1>Publier une offre</h1>
+
+    <p>
+      Présentez votre service aux clients qui recherchent vos compétences.
+    </p>
+
+    <form id="publishForm">
+
+      <label>Votre nom ou entreprise</label>
+
+      <input
+        type="text"
+        id="seller"
+        required
+        placeholder="Ex : Mon entreprise"
+      >
+
+      <label>Nom du service</label>
+
+      <input
+        type="text"
+        id="title"
+        required
+        placeholder="Ex : Création de site web"
+      >
+
+      <label>Description</label>
+
+      <textarea
+        id="description"
+        required
+        placeholder="Décrivez clairement votre service..."
+      ></textarea>
+
+      <label>Catégorie</label>
+
+      <select id="category" required>
+
+        <option value="">Choisir une catégorie</option>
+
+        <option>Web Development</option>
+        <option>Graphic Design</option>
+        <option>Marketing</option>
+        <option>Video Editing</option>
+        <option>Writing</option>
+        <option>Business</option>
+
+      </select>
+
+      <label>Prix</label>
+
+      <input
+        type="text"
+        id="price"
+        required
+        placeholder="Ex : 50 USD"
+      >
+
+      <button type="submit" class="btn">
+        Publier l'offre
+      </button>
+
+    </form>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+
+<script>
+
+document.getElementById("publishForm")
+.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  const service = {
+
+    seller:
+      document.getElementById("seller").value.trim(),
+
+    title:
+      document.getElementById("title").value.trim(),
+
+    description:
+      document.getElementById("description").value.trim(),
+
+    category:
+      document.getElementById("category").value,
+
+    price:
+      document.getElementById("price").value.trim(),
+
+    date:
+      new Date().toISOString()
+
+  };
+
+  let services =
+    JSON.parse(localStorage.getItem("skillhubServices")) || [];
+
+  services.push(service);
+
+  localStorage.setItem(
+    "skillhubServices",
+    JSON.stringify(services)
+  );
+
+  alert("Votre offre a été publiée.");
+
+  window.location.href = "services.html";
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription - SkillHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="logo">Skill<span>Hub</span></a>
+</header>
+
+<main class="page">
+
+  <section class="form-container">
+
+    <h1>Créer un compte</h1>
+
+    <p>
+      Rejoignez SkillHub gratuitement.
+    </p>
+
+    <form id="signupForm">
+
+      <label>Nom</label>
+
+      <input
+        type="text"
+        id="name"
+        required
+        placeholder="Votre nom"
+      >
+
+      <label>Email</label>
+
+      <input
+        type="email"
+        id="email"
+        required
+        placeholder="votre@email.com"
+      >
+
+      <label>Mot de passe</label>
+
+      <input
+        type="password"
+        id="password"
+        required
+        minlength="6"
+        placeholder="Minimum 6 caractères"
+      >
+
+      <button class="btn">
+        Créer mon compte
+      </button>
+
+    </form>
+
+    <p>
+      Vous avez déjà un compte ?
+      <a href="login.html">Se connecter</a>
+    </p>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+
+<script>
+
+document.getElementById("signupForm")
+.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  const user = {
+
+    name:
+      document.getElementById("name").value.trim(),
+
+    email:
+      document.getElementById("email").value.trim(),
+
+    password:
+      document.getElementById("password").value
+
+  };
+
+  localStorage.setItem(
+    "skillhubUser",
+    JSON.stringify(user)
+  );
+
+  localStorage.setItem(
+    "skillhubLoggedIn",
+    "true"
+  );
+
+  alert("Compte créé avec succès.");
+
+  window.location.href = "dashboard.html";
+
+});
+
+</script>
+
+</body>
+</html>

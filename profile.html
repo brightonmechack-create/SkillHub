@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil - SkillHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="logo">Skill<span>Hub</span></a>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="services.html">Services</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <section class="profile-card">
+
+    <div class="profile-avatar">
+      ?
+    </div>
+
+    <h1 id="profileName">Votre profil</h1>
+
+    <p id="profileEmail">
+      Connectez-vous pour afficher votre profil.
+    </p>
+
+    <a href="login.html" class="btn">
+      Se connecter
+    </a>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+
+<script>
+
+const user =
+  JSON.parse(localStorage.getItem("skillhubUser"));
+
+if (user) {
+
+  document.getElementById("profileName")
+    .textContent = user.name;
+
+  document.getElementById("profileEmail")
+    .textContent = user.email;
+
+}
+
+</script>
+
+</body>
+</html>

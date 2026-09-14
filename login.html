@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - SkillHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="logo">Skill<span>Hub</span></a>
+</header>
+
+<main class="page">
+
+  <section class="form-container">
+
+    <h1>Connexion</h1>
+
+    <p>
+      Connectez-vous à votre compte SkillHub.
+    </p>
+
+    <form id="loginForm">
+
+      <label>Email</label>
+
+      <input
+        type="email"
+        id="email"
+        required
+        placeholder="votre@email.com"
+      >
+
+      <label>Mot de passe</label>
+
+      <input
+        type="password"
+        id="password"
+        required
+        placeholder="Votre mot de passe"
+      >
+
+      <button class="btn">
+        Se connecter
+      </button>
+
+    </form>
+
+    <p>
+      Vous n'avez pas encore de compte ?
+      <a href="signup.html">Créer un compte</a>
+    </p>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+
+<script>
+
+document.getElementById("loginForm")
+.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const savedUser =
+    JSON.parse(localStorage.getItem("skillhubUser"));
+
+  if (
+    savedUser &&
+    savedUser.email === email &&
+    savedUser.password === password
+  ) {
+
+    localStorage.setItem(
+      "skillhubLoggedIn",
+      "true"
+    );
+
+    alert("Connexion réussie.");
+
+    window.location.href = "dashboard.html";
+
+  } else {
+
+    alert(
+      "Identifiants incorrects ou compte inexistant."
+    );
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
